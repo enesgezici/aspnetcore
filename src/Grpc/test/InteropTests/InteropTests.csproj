@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <InteropTestsAssestsDir>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)..\, Directory.Build.props))\src\Grpc\test\testassets</InteropTestsAssestsDir>
+    <InteropTestsAssestsDir>$(RepoRoot)src\Grpc\test\testassets</InteropTestsAssestsDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +18,7 @@
       <_Parameter1>InteropTestsWebsiteDir</_Parameter1>
       <_Parameter2>$(InteropTestsAssestsDir)\InteropWebsite</_Parameter2>
     </AssemblyAttribute>
-    
+
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
       <_Parameter1>InteropTestsClientDir</_Parameter1>
       <_Parameter2>$(InteropTestsAssestsDir)\InteropClient</_Parameter2>

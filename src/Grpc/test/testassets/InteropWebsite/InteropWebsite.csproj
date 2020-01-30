@@ -8,26 +8,6 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);$(ArtifactsShippingPackagesDir)</RestoreAdditionalProjectSources>
-    <MicrosoftAspNetCoreAppRefPackageVersion Condition="'$(IsTargetingPackBuilding)' != 'false'">$(TargetingPackVersion)</MicrosoftAspNetCoreAppRefPackageVersion>
-    <MicrosoftAspNetCoreAppRefPackageVersion Condition="'$(IsTargetingPackBuilding)' == 'false'">$(AspNetCoreBaselineVersion)</MicrosoftAspNetCoreAppRefPackageVersion>
-  </PropertyGroup>
-
-  <!-- Use the shared framework that was produced -->
-  <ItemGroup>
-    <KnownFrameworkReference
-      Include="Microsoft.AspNetCore.App"
-      TargetFramework="$(DefaultNetCoreTargetFramework)"
-      RuntimeFrameworkName="Microsoft.AspNetCore.App"
-      TargetingPackName="Microsoft.AspNetCore.App.Ref"
-      RuntimePackNamePatterns="Microsoft.AspNetCore.App.Runtime.**RID**"
-      DefaultRuntimeFrameworkVersion="$(SharedFxVersion)"
-      LatestRuntimeFrameworkVersion="$(SharedFxVersion)"
-      TargetingPackVersion="$(MicrosoftAspNetCoreAppRefPackageVersion)"
-      RuntimePackRuntimeIdentifiers="$(SupportedRuntimeIdentifiers)" />
-  </ItemGroup>
-
   <ItemGroup>
     <Protobuf Include="..\Proto\grpc\testing\test.proto" GrpcServices="Server" Link="Protos\test.proto" />
     <Protobuf Include="..\Proto\grpc\testing\empty.proto" GrpcServices="None" Link="Protos\empty.proto" />

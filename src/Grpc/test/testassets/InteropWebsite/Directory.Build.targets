@@ -1,0 +1,29 @@
+<Project>
+  <!-- Skip the parent folder to prevent getting test package references. -->
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)..\, Directory.Build.targets))\Directory.Build.targets" />
+
+  <PropertyGroup>
+    <MicrosoftAspNetCoreAppRefPackageVersion Condition="'$(IsTargetingPackBuilding)' != 'false'">$(TargetingPackVersion)</MicrosoftAspNetCoreAppRefPackageVersion>
+    <MicrosoftAspNetCoreAppRefPackageVersion Condition="'$(IsTargetingPackBuilding)' == 'false'">$(AspNetCoreBaselineVersion)</MicrosoftAspNetCoreAppRefPackageVersion>
+
+    <Test_SharedFxVersion>$(SharedFxVersion)</Test_SharedFxVersion>
+    <Test_MicrosoftAspNetCoreAppRefPackageVersion>$(MicrosoftAspNetCoreAppRefPackageVersion)</Test_MicrosoftAspNetCoreAppRefPackageVersion>
+    <Test_SupportedRuntimeIdentifiers>$(SupportedRuntimeIdentifiers)</Test_SupportedRuntimeIdentifiers>
+  </PropertyGroup>
+
+  <!-- Use the shared framework that was produced -->
+  <ItemGroup>
+    <KnownFrameworkReference
+      Update="Microsoft.NETCore.App"
+      DefaultRuntimeFrameworkVersion="$(MicrosoftNETCoreAppRuntimeVersion)"
+      LatestRuntimeFrameworkVersion="$(MicrosoftNETCoreAppRuntimeVersion)"
+      TargetingPackVersion="$(MicrosoftNETCoreAppRefPackageVersion)" />
+
+    <KnownFrameworkReference
+      Include="Microsoft.AspNetCore.App"
+      DefaultRuntimeFrameworkVersion="$(SharedFxVersion)"
+      LatestRuntimeFrameworkVersion="$(SharedFxVersion)"
+      TargetingPackVersion="$(MicrosoftAspNetCoreAppRefPackageVersion)"
+      RuntimePackRuntimeIdentifiers="$(SupportedRuntimeIdentifiers)" />
+  </ItemGroup>
+</Project>

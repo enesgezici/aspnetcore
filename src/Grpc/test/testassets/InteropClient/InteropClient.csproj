@@ -11,13 +11,13 @@
     <Protobuf Include="..\Proto\grpc\testing\empty.proto" GrpcServices="None" Link="Protos\empty.proto" />
     <Protobuf Include="..\Proto\grpc\testing\messages.proto" GrpcServices="None" Link="Protos\messages.proto" />
 
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    
-    <Reference Include="Grpc.Net.Client" />
     <Reference Include="CommandLineParser" />
     <Reference Include="Google.Protobuf" />
     <Reference Include="Grpc.Auth" PrivateAssets="All" />
+    <Reference Include="Grpc.Net.Client" />
     <Reference Include="Grpc.Tools" PrivateAssets="All" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection" />
+    <Reference Include="Microsoft.Extensions.Logging.Console" />
   </ItemGroup>
 
 </Project>

@@ -26,6 +26,7 @@ namespace InteropTests
             var attributes = typeof(InteropTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>().ToList();
 
             fixture.Path = attributes.Single(a => a.Key == "InteropTestsWebsiteDir").Value;
+            fixture.DotnetPath = attributes.Single(a => a.Key == "DotNetTool").Value;
             _clientPath = attributes.Single(a => a.Key == "InteropTestsClientDir").Value;
 
             _fixture = fixture;

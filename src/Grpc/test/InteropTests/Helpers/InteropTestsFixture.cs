@@ -13,6 +13,8 @@ namespace InteropTests.Helpers
 
         public string Path { get; set; }
 
+        public string DotnetPath { get; set; }
+
         public async Task EnsureStarted(ITestOutputHelper output)
         {
             if (_process != null)
@@ -25,7 +27,7 @@ namespace InteropTests.Helpers
                 throw new InvalidOperationException("Path has not been set.");
             }
 
-            _process = new WebsiteProcess(Path, output);
+            _process = new WebsiteProcess(Path, DotnetPath, output);
 
             await _process.WaitForReady();
         }

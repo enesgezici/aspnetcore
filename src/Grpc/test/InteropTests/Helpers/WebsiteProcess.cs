@@ -16,17 +16,18 @@ namespace InteropTests.Helpers
         private readonly TaskCompletionSource<object> _startTcs;
         private ITestOutputHelper _output;
 
-        public WebsiteProcess(string path, ITestOutputHelper output)
+        public WebsiteProcess(string path, string dotnetPath, ITestOutputHelper output)
         {
+            var arguments = $"run -p {path}";
             _output = output;
-            _output.WriteLine("Starting process at path: " + path);
+            _output.WriteLine($"{dotnetPath} {arguments}");
             _process = new Process();
             _process.StartInfo = new ProcessStartInfo
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                FileName = "dotnet.exe",
-                Arguments = @$"run -p {path}"
+                FileName = dotnetPath,
+                Arguments = arguments
             };
             _process.EnableRaisingEvents = true;
             _process.OutputDataReceived += Process_OutputDataReceived;

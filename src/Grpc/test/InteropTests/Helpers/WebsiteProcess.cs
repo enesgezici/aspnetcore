@@ -14,9 +14,12 @@ namespace InteropTests.Helpers
         private readonly Process _process;
         private readonly ProcessEx _processEx;
         private readonly TaskCompletionSource<object> _startTcs;
+        private ITestOutputHelper _output;
 
         public WebsiteProcess(string path, ITestOutputHelper output)
         {
+            _output = output;
+            _output.WriteLine("Starting process at path: " + path);
             _process = new Process();
             _process.StartInfo = new ProcessStartInfo
             {
@@ -49,6 +52,7 @@ namespace InteropTests.Helpers
             var data = e.Data;
             if (data != null)
             {
+                _output.WriteLine("Server output: " + data);
                 if (data.Contains("Application started."))
                 {
                     _startTcs.TrySetResult(null);

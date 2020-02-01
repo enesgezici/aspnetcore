@@ -1,4 +1,4 @@
-﻿#region Copyright notice and license
+#region Copyright notice and license
 
 // Copyright 2019 The gRPC Authors
 //
@@ -18,11 +18,16 @@
 
 using System;
 using System.IO;
-using Microsoft.AspNetCore;
+using System.Linq;
+using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Extensions.Logging;
 
 namespace InteropTestsWebsite
 {
@@ -41,11 +46,10 @@ namespace InteropTestsWebsite
                     {
                         // Support --port and --use_tls cmdline arguments normally supported
                         // by gRPC interop servers.
-                        var port = context.Configuration.GetValue<int>("port", 50052);
                         var useTls = context.Configuration.GetValue<bool>("use_tls", false);
 
                         options.Limits.MinRequestBodyDataRate = null;
-                        options.ListenAnyIP(port, listenOptions =>
+                        options.ListenAnyIP(0, listenOptions =>
                         {
                             Console.WriteLine($"Enabling connection encryption: {useTls}");
 
@@ -58,6 +62,17 @@ namespace InteropTestsWebsite
                             }
                             listenOptions.Protocols = HttpProtocols.Http2;
                         });
+                    })
+                    .ConfigureLogging(builder =>
+                    {
+                        var logPath = typeof(Program).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>().Single(a => a.Key == "LogFilePath").Value;
+                        var serilogger = new LoggerConfiguration()
+                            .Enrich.FromLogContext()
+                            .MinimumLevel.Verbose()
+                            .WriteTo.File(logPath, outputTemplate: "[{SourceContext}] [{Level}] {Message:l}{NewLine}{Exception}", flushToDiskInterval: TimeSpan.FromSeconds(1), shared: true)
+                            .CreateLogger();
+                        var serilogLoggerProvider = new SerilogLoggerProvider(serilogger, dispose: true);
+                        builder.Services.AddSingleton<ILoggerProvider>(_ => serilogLoggerProvider);
                     });
                     webBuilder.UseStartup<Startup>();
                 });

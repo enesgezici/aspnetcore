@@ -3,6 +3,9 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Internal;
 using Xunit.Abstractions;
@@ -13,13 +16,19 @@ namespace InteropTests.Helpers
     {
         private readonly Process _process;
         private readonly ProcessEx _processEx;
+        private readonly string _serverLogPath;
         private readonly TaskCompletionSource<object> _startTcs;
+        private readonly StringBuilder _consoleOut = new StringBuilder();
+        private static readonly Regex NowListeningRegex = new Regex(@"^\s*Now listening on: .*:(?<port>\d*)$");
         private ITestOutputHelper _output;
 
-        public WebsiteProcess(string path, string dotnetPath, ITestOutputHelper output)
+        public string ServerPort { get; private set; }
+
+        public WebsiteProcess(string path, string dotnetPath, ITestOutputHelper output, string serverLogPath)
         {
             var arguments = $"run -p {path}";
             _output = output;
+            _serverLogPath = serverLogPath;
             _output.WriteLine($"{dotnetPath} {arguments}");
             _process = new Process();
             _process.StartInfo = new ProcessStartInfo
@@ -53,7 +62,13 @@ namespace InteropTests.Helpers
             var data = e.Data;
             if (data != null)
             {
-                _output.WriteLine("Server output: " + data);
+                _consoleOut.AppendLine(data);
+                var m = NowListeningRegex.Match(data);
+                if (m.Success)
+                {
+                    ServerPort = m.Groups["port"].Value;
+                }
+
                 if (data.Contains("Application started."))
                 {
                     _startTcs.TrySetResult(null);
@@ -63,6 +78,7 @@ namespace InteropTests.Helpers
 
         public void Dispose()
         {
+            File.WriteAllText(_serverLogPath, _consoleOut.ToString());
             _processEx.Dispose();
         }
     }

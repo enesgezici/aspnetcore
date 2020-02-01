@@ -11,7 +11,7 @@
   <ItemGroup>
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
       <_Parameter1>LogFilePath</_Parameter1>
-      <_Parameter2>$(ArtifactsLogDir)\InteropWebsite.log</_Parameter2>
+      <_Parameter2>$(ArtifactsLogDir)InteropWebsite.log</_Parameter2>
     </AssemblyAttribute>
 
     <Protobuf Include="..\Proto\grpc\testing\test.proto" GrpcServices="Server" Link="Protos\test.proto" />

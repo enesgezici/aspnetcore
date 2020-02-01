@@ -27,6 +27,7 @@ namespace InteropTests
 
             fixture.Path = attributes.Single(a => a.Key == "InteropTestsWebsiteDir").Value;
             fixture.DotnetPath = attributes.Single(a => a.Key == "DotNetTool").Value;
+            fixture.ServerLogPath = attributes.Single(a => a.Key == "ServerLogPath").Value; 
             _clientPath = attributes.Single(a => a.Key == "InteropTestsClientDir").Value;
 
             _fixture = fixture;
@@ -39,7 +40,7 @@ namespace InteropTests
         {
             await _fixture.EnsureStarted(_output).TimeoutAfter(DefaultTimeout);
 
-            using (var clientProcess = new ClientProcess(_output, _clientPath, 50052, name))
+            using (var clientProcess = new ClientProcess(_output, _clientPath, _fixture.ServerPort, name))
             {
                 await clientProcess.WaitForReady().TimeoutAfter(DefaultTimeout);
 

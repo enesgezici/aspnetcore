@@ -15,6 +15,10 @@ namespace InteropTests.Helpers
 
         public string DotnetPath { get; set; }
 
+        public string ServerPort { get; private set; }
+
+        public string ServerLogPath { get; set; }
+
         public async Task EnsureStarted(ITestOutputHelper output)
         {
             if (_process != null)
@@ -27,9 +31,11 @@ namespace InteropTests.Helpers
                 throw new InvalidOperationException("Path has not been set.");
             }
 
-            _process = new WebsiteProcess(Path, DotnetPath, output);
+            _process = new WebsiteProcess(Path, DotnetPath, output, ServerLogPath);
 
             await _process.WaitForReady();
+
+            ServerPort = _process.ServerPort;
         }
 
         public void Dispose()

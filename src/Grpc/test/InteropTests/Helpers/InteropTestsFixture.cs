@@ -17,7 +17,6 @@ namespace InteropTests.Helpers
 
         public string ServerPort { get; private set; }
 
-        public string ServerLogPath { get; set; }
 
         public async Task EnsureStarted(ITestOutputHelper output)
         {
@@ -31,7 +30,7 @@ namespace InteropTests.Helpers
                 throw new InvalidOperationException("Path has not been set.");
             }
 
-            _process = new WebsiteProcess(Path, DotnetPath, output, ServerLogPath);
+            _process = new WebsiteProcess(Path, DotnetPath, output);
 
             await _process.WaitForReady();
 

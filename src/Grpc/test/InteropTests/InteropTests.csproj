@@ -33,6 +33,11 @@
       <_Parameter1>ServerLogPath</_Parameter1>
       <_Parameter2>$(ArtifactsLogDir)InteropServer.log</_Parameter2>
     </AssemblyAttribute>
+    
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>Configuration</_Parameter1>
+      <_Parameter2>$(Configuration)</_Parameter2>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

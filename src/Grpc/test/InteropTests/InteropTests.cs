@@ -27,7 +27,6 @@ namespace InteropTests
 
             fixture.Path = attributes.Single(a => a.Key == "InteropTestsWebsiteDir").Value;
             fixture.DotnetPath = attributes.Single(a => a.Key == "DotNetTool").Value;
-            fixture.ServerLogPath = attributes.Single(a => a.Key == "ServerLogPath").Value; 
             _clientPath = attributes.Single(a => a.Key == "InteropTestsClientDir").Value;
 
             _fixture = fixture;

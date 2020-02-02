@@ -4,6 +4,8 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -24,11 +26,12 @@ namespace InteropTests.Helpers
 
         public string ServerPort { get; private set; }
 
-        public WebsiteProcess(string path, string dotnetPath, ITestOutputHelper output, string serverLogPath)
+        public WebsiteProcess(string path, string dotnetPath, ITestOutputHelper output)
         {
-            var arguments = $"run -p {path}";
+            var attributes = typeof(InteropTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
+            var arguments = $"run -p {path} -c {attributes.Single(a => a.Key == "Configuration").Value}";
             _output = output;
-            _serverLogPath = serverLogPath;
+            _serverLogPath = attributes.Single(a => a.Key == "ServerLogPath").Value;
             _output.WriteLine($"{dotnetPath} {arguments}");
             _process = new Process();
             _process.StartInfo = new ProcessStartInfo

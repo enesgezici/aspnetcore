@@ -29,7 +29,7 @@ namespace InteropTests.Helpers
         public WebsiteProcess(string path, string dotnetPath, ITestOutputHelper output)
         {
             var attributes = typeof(InteropTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
-            var arguments = $"run -p {path} -c {attributes.Single(a => a.Key == "Configuration").Value}";
+            var arguments = $"run --no-build -p {path} -c {attributes.Single(a => a.Key == "Configuration").Value}";
             _output = output;
             _serverLogPath = attributes.Single(a => a.Key == "ServerLogPath").Value;
             _output.WriteLine($"{dotnetPath} {arguments}");

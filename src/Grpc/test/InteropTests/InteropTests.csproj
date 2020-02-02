@@ -33,11 +33,14 @@
       <_Parameter1>ServerLogPath</_Parameter1>
       <_Parameter2>$(ArtifactsLogDir)InteropServer.log</_Parameter2>
     </AssemblyAttribute>
-    
+
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
       <_Parameter1>Configuration</_Parameter1>
       <_Parameter2>$(Configuration)</_Parameter2>
     </AssemblyAttribute>
+
+    <ProjectReference Include="..\testassets\InteropClient\InteropClient.csproj" ReferenceOutputAssembly="false"/>
+    <ProjectReference Include="..\testassets\InteropWebsite\InteropWebsite.csproj" ReferenceOutputAssembly="false"/>
   </ItemGroup>
 
 </Project>
